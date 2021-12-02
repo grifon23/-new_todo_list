@@ -9,5 +9,8 @@ export const getPostsReq = (limit = 10, page = 1) => {
   });
 };
 export const getPostsIdReq = (id) => {
+  return axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+};
+export const getPostsCommentsReq = (id) => {
   return axios.get(`https://jsonplaceholder.typicode.com/posts/${id}/comments`);
 };
