@@ -1,0 +1,8 @@
+.btn-ui {
+  border-radius: 10px;
+  border: 1px solid rgb(36, 150, 226, 0.5);
+  padding: 8px;
+  background-color: azure;
+  cursor: pointer;
+  max-height: 40px;
+}
