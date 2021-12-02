@@ -50,7 +50,6 @@ export const Posts = () => {
         marginRight: "auto",
       }}
     >
-      <hr style={{ margin: "15px 0" }} />
       <Button onClick={() => setVisible(true)}>Create post</Button>
       <PostFilter filter={filter} setFilter={setFilter} />
       {isLoading ? (

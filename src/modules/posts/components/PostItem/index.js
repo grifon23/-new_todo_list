@@ -23,9 +23,10 @@ export const PostItem = ({ post, remove }) => {
         </strong>
         <p>{post.body}</p>
       </div>
-
-      <Button onClick={loadComments}>Comments</Button>
-      <Button onClick={() => remove(post)}>delete</Button>
+      <div>
+        <Button onClick={loadComments}>Comments</Button>
+        <Button onClick={() => remove(post)}>delete</Button>
+      </div>
     </li>
   );
 };
