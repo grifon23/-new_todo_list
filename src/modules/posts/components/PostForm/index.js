@@ -1,25 +1,28 @@
 import React, { useState } from "react";
 import { MyInpyt } from "../../../../UI/MyInput";
 import { Button } from "../../../../UI/Button";
-export const PostForm = ({ create }) => {
+export const PostForm = ({ create, setVisible }) => {
   const [form, setForm] = useState({
-    name: "",
-    comment: "",
+    title: "",
+    body: "",
   });
-  const addNewPost = (e, id) => {
+  const addNewPost = (e) => {
     e.preventDefault();
     const newPost = {
-      ...form,
+      title: form.title,
+      body: form.body,
       id: Date.now(),
     };
     create(newPost);
-    setForm({ name: "", comment: "" });
+    setForm({ title: "", body: "" });
+  };
+  const close = (e) => {
+    e.preventDefault();
+    setVisible(false);
   };
   return (
     <form
-      onSubmit={addNewPost}
       style={{
-        width: "200px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -28,15 +31,15 @@ export const PostForm = ({ create }) => {
     >
       <h4>Add post</h4>
       <MyInpyt
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-        value={form.name}
+        onChange={(e) => setForm({ ...form, title: e.target.value })}
+        value={form.title}
         type="text"
         placeholder="enter post"
         style={{ marginBottom: "10px" }}
       />
       <MyInpyt
-        onChange={(e) => setForm({ ...form, comment: e.target.value })}
-        value={form.comment}
+        onChange={(e) => setForm({ ...form, body: e.target.value })}
+        value={form.body}
         type="text"
         placeholder="enter comments"
       />
@@ -48,8 +51,8 @@ export const PostForm = ({ create }) => {
           marginTop: "20px",
         }}
       >
-        <Button type="submit">add posts</Button>
-        <Button>cancel</Button>
+        <Button onClick={addNewPost}>add posts</Button>
+        <Button onClick={close}>cancel</Button>
       </div>
     </form>
   );
