@@ -1,35 +1,22 @@
 import React from "react";
-import { Button } from "../../../../UI/Button";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { PostItem } from "../PostItem";
+import "./style.css";
 
 export const PostList = ({ posts, title, remove }) => {
+  if (!posts.length) {
+    return <h1 style={{ textAlign: "center" }}>No posts</h1>;
+  }
   return (
     <>
       <h1 style={{ textAlign: "center" }}>{title}</h1>
-
-      <ul style={{ listStyle: "none" }}>
-        {posts.map((post, index) => (
-          <li
-            key={post.id}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "10px",
-              border: "4px solid rgb(36, 150, 226, 0.5)",
-              margin: "20px 0 20px 0",
-            }}
-          >
-            <div>
-              <strong>
-                {index + 1} {post.name}
-              </strong>
-              <p>{post.comment}</p>
-            </div>
-
-            <Button onClick={() => remove(post)}>delete</Button>
-          </li>
+      <TransitionGroup className="todo-list">
+        {posts.map((post) => (
+          <CSSTransition key={post.id} classNames="item" timeout={500}>
+            <PostItem remove={remove} post={post} />
+          </CSSTransition>
         ))}
-      </ul>
+      </TransitionGroup>
     </>
   );
 };
