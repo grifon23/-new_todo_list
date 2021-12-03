@@ -1,13 +1,14 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
 import { Posts } from "../../posts/page/Posts";
 import { About } from "../../comments/page/About";
+import { ErrorPage } from "../../erorr/Errorpage";
+import { AuthPage } from "../../auth/page/AuthPage";
 
-export const Routers = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Posts />} />
-      <Route path="comments/post/:id" element={<About />} />
-    </Routes>
-  );
-};
+export const privateRouters = [
+  { path: "/", element: <Posts />, exact: true },
+  { path: "comments/post/:id", element: <About />, exact: true },
+  { path: "error/:error", element: <ErrorPage />, exact: true },
+];
+export const publicRouters = [
+  { path: "auth", element: <AuthPage />, exact: true },
+];
