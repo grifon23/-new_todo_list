@@ -27,6 +27,7 @@ export const PostForm = ({ create, setVisible }) => {
         flexDirection: "column",
         justifyContent: "center",
         textAlign: "center",
+        padding: "10px",
       }}
     >
       <h4>Add post</h4>

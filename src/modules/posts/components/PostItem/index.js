@@ -23,7 +23,7 @@ export const PostItem = ({ post, remove }) => {
         </strong>
         <p>{post.body}</p>
       </div>
-      <div>
+      <div style={{ display: "flex" }}>
         <Button onClick={loadComments}>Comments</Button>
         <Button onClick={() => remove(post)}>delete</Button>
       </div>

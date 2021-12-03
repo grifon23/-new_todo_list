@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { PostFilter } from "../../components/PostFilter";
 import { PostForm } from "../../components/PostForm";
 import { PostList } from "../../components/PostList";
@@ -9,6 +9,8 @@ import { Content } from "../../../../UI/LoadingAtom";
 import { getPageCount } from "../../../../utils/pages";
 import { Pagination } from "../../../../UI/Pagination";
 import { usePosts } from "../../hooks/usePosts";
+import { useNavigate } from "react-router";
+import { AuthContext } from "../../../auth/AuthContext";
 
 export const Posts = () => {
   const [filter, setFilter] = useState({ sort: "", query: "" });
@@ -17,22 +19,28 @@ export const Posts = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
-  const [isLoading, setLoading] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const navigate = useNavigate();
+  const { setIsAuth } = useContext(AuthContext);
   const loadPosts = async () => {
     try {
-      setLoading(true);
+      setLoader(true);
       const response = await getPostsReq(limit, page);
       setPosts(response.data);
       const totalCount = response.headers["x-total-count"];
       setTotalPage(getPageCount(totalCount, limit));
-      setLoading(false);
+      setLoader(false);
     } catch (e) {
+      const error = e;
+      navigate(`error/${error}`, { state: error });
       console.log("error", e);
     }
   };
   useEffect(() => {
     loadPosts();
   }, [page]);
+  const userName = localStorage.getItem("userName");
+
   const sortedAndSearchPost = usePosts(posts, filter.sort, filter.query);
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
@@ -41,7 +49,11 @@ export const Posts = () => {
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
-
+  const logOut = () => {
+    localStorage.removeItem("password");
+    localStorage.removeItem("userName");
+    setIsAuth(false);
+  };
   return (
     <div
       style={{
@@ -50,9 +62,13 @@ export const Posts = () => {
         marginRight: "auto",
       }}
     >
+      <h1>User: {userName}</h1>
+      <dix style={{ display: "flex", justifyContent: "right" }}>
+        <Button onClick={logOut}>LogOut</Button>
+      </dix>
       <Button onClick={() => setVisible(true)}>Create post</Button>
       <PostFilter filter={filter} setFilter={setFilter} />
-      {isLoading ? (
+      {loader ? (
         <div
           style={{
             display: "flex",
@@ -69,7 +85,6 @@ export const Posts = () => {
           title="Post list"
         />
       )}
-
       <Modal visible={visible} setVisible={setVisible}>
         <PostForm
           create={createPost}
